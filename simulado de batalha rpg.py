@@ -121,14 +121,14 @@ class Boss(Villain):
         return damage
 
 
-warrior = Warrior("Oriseus", 40, 10, 8, 11, kills=30)
-archer = Archer("Artorius", 35, 12, 10, 16, precision=34)
-healer = Healer("Thrael", 30, 9, 17, 9, assists=30)
+warrior = Warrior("naruto", 40, 10, 8, 11, kills=30)
+archer = Archer("hunte", 35, 12, 10, 16, precision=34)
+healer = Healer("Killua", 30, 9, 17, 9, assists=30)
 heroes = [warrior, archer, healer]
 
-villain1 = Minion("skar", 30, 8, 6, 10, evilness=30)
-villain2 = Boss("shota na kama", 50, 14, 15, 12, evilness=30)
-villain3 = Boss("golennceu", 50, 14, 15, 12, evilness=30)
+villain1 = Minion("Illumi", 30, 8, 6, 10, evilness=30)
+villain2 = Boss("Chrollo", 50, 14, 15, 12, evilness=30)
+villain3 = Boss("Feitan", 50, 14, 15, 12, evilness=30)
 villains = [villain1, villain2,villain3]
 
 
@@ -173,4 +173,3 @@ def battle(heroes, villains):
 
 
 battle(heroes, villains)
-
