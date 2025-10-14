@@ -121,55 +121,78 @@ class Boss(Villain):
         return damage
 
 
+
 warrior = Warrior("naruto", 40, 10, 8, 11, kills=30)
-archer = Archer("hunte", 35, 12, 10, 16, precision=34)
+archer = Archer("hunte", 35, 12, 10, 16, precision=30)
 healer = Healer("Killua", 30, 9, 17, 9, assists=30)
 heroes = [warrior, archer, healer]
 
 villain1 = Minion("Illumi", 30, 8, 6, 10, evilness=30)
-villain2 = Boss("Chrollo", 50, 14, 15, 12, evilness=30)
+villain2 = Boss("boruto", 50, 14, 15, 12, evilness=30)
 villain3 = Boss("Feitan", 50, 14, 15, 12, evilness=30)
-villains = [villain1, villain2,villain3]
+villain4 = Boss("goku", 50, 30, 50, 23, evilness=30)
+villains = [villain1, villain2, villain3, villain4]
+
 
 
 def battle(heroes, villains):
     turn = 1
-    while any(h.health > 0 for h in heroes) and any(v.health > 0 for v in villains):
+    max_turns = 10
+
+    while turn <= max_turns:
         print(f"\n--- Turno {turn} ---")
+
+       
         for hero in heroes:
             if hero.health <= 0:
                 continue
             if isinstance(hero, Healer):
-                ally = random.choice([h for h in heroes if h.health > 0])
-                hero.heal(ally)
+                allies_alive = [h for h in heroes if h.health > 0]
+                if allies_alive:
+                    ally = random.choice(allies_alive)
+                    hero.heal(ally)
             else:
                 targets = [v for v in villains if v.health > 0]
-                if not targets:
-                    break
-                target = random.choice(targets)
-                hero.attack(target)
-        if not any(v.health > 0 for v in villains):
-            print("\nTodos os vilões foram derrotados!")
-            break
+                if targets:
+                    target = random.choice(targets)
+                    hero.attack(target)
+                else:
+                    print(f"{hero.name} não encontrou inimigos vivos para atacar.")
+
+      
         for villain in villains:
             if villain.health <= 0:
                 continue
             targets = [h for h in heroes if h.health > 0]
-            if not targets:
-                break
-            target = random.choice(targets)
-            villain.attack(target)
+            if targets:
+                target = random.choice(targets)
+                villain.attack(target)
+            else:
+                print(f"{villain.name} não encontrou heróis vivos para atacar.")
+
+      
         print("\nEstado após o turno:")
         for h in heroes:
             print(h)
         for v in villains:
             print(v)
+
         turn += 1
+
+ 
     print("\n------ FIM DA BATALHA -------------")
-    if all(h.health <= 0 for h in heroes):
-        print(" Vilões venceram a batalha!")
+    total_hp_heroes = sum(h.health for h in heroes if h.health > 0)
+    total_hp_villains = sum(v.health for v in villains if v.health > 0)
+
+    print(f"HP restante - Heróis: {total_hp_heroes} | Vilões: {total_hp_villains}")
+    if total_hp_heroes > total_hp_villains:
+        print(" Vitória dos heróis por resistência!")
+    elif total_hp_villains > total_hp_heroes:
+        print(" Vitória dos vilões por resistência!")
     else:
-        print(" Heróis venceram a batalha!")
+        print(" Empate técnico!")
+
 
 
 battle(heroes, villains)
+
