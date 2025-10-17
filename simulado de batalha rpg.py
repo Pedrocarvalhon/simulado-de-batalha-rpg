@@ -1,9 +1,7 @@
 from abc import ABC, abstractmethod
 import random
 
-# ======================
-# CLASSE BASE (SUPERCLASSE)
-# ======================
+
 class RPG(ABC):
     def __init__(self, name, rpg_class, health, strength, intelligence, dexterity):
         self.name = name
@@ -37,9 +35,7 @@ class RPG(ABC):
         return f"{self.name} ({self.rpg_class}) - Nível: {self.level()} - HP: {self.health}/{self.max_health}"
 
 
-# ======================
-# CLASSES FILHAS (HERANÇA)
-# ======================
+
 class Warrior(RPG):
     def __init__(self, name, health, strength, intelligence, dexterity, kills):
         super().__init__(name, "Guerreiro", health, strength, intelligence, dexterity)
@@ -159,9 +155,7 @@ class Boss(Villain):
         return f"{self.name} (Boss) - Malícia: {self.evilness} - HP: {self.health}/{self.max_health}"
 
 
-# ======================
-# CRIAÇÃO DOS PERSONAGENS
-# ======================
+
 warrior = Warrior("Naruto", 40, 10, 8, 11, kills=30)
 archer = Archer("Hunte", 35, 12, 10, 16, precision=30)
 healer = Healer("Killua", 30, 9, 17, 9, assists=30)
@@ -174,9 +168,7 @@ villain4 = Boss("Goku", 50, 30, 50, 23, evilness=30)
 villains = [villain1, villain2, villain3, villain4]
 
 
-# ======================
-# SISTEMA DE BATALHA
-# ======================
+
 def battle(heroes, villains):
     turn = 1
     max_turns = 10
@@ -231,4 +223,5 @@ def battle(heroes, villains):
 # EXECUÇÃO
 # ======================
 battle(heroes, villains)
+
 
