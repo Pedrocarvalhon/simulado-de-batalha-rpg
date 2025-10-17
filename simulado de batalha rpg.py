@@ -157,13 +157,13 @@ class Boss(Villain):
 
 
 warrior = Warrior("Naruto", 40, 10, 8, 11, kills=30)
-archer = Archer("Hunte", 35, 12, 10, 16, precision=30)
-healer = Healer("Killua", 30, 9, 17, 9, assists=30)
+archer = Archer("Hunte", 30, 12, 10, 16, precision=30)
+healer = Healer("Killua", 30, 10, 10, 13, assists=30)
 heroes = [warrior, archer, healer]
 
-villain1 = Minion("Illumi", 30, 8, 6, 10, evilness=30)
+villain1 = Minion("Illumi", 30, 8, 6, 12, evilness=30)
 villain2 = Boss("Boruto", 50, 14, 15, 12, evilness=30)
-villain3 = Boss("Feitan", 50, 14, 15, 12, evilness=30)
+villain3 = Boss("Feitan", 50, 14, 15, 16, evilness=30)
 villain4 = Boss("Goku", 50, 30, 50, 23, evilness=30)
 villains = [villain1, villain2, villain3, villain4]
 
@@ -189,7 +189,6 @@ def battle(heroes, villains):
                     target = random.choice(targets)
                     hero.attack(target)
 
-        # Turno dos vilões
         for villain in villains:
             if villain.health <= 0:
                 continue
@@ -219,9 +218,7 @@ def battle(heroes, villains):
         print("Empate técnico!")
 
 
-# ======================
-# EXECUÇÃO
-# ======================
+
 battle(heroes, villains)
 
 
