@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 import random
 
 
+
+# classe base  rpg
 class RPG(ABC):
     def __init__(self, name, rpg_class, health, strength, intelligence, dexterity):
         self.name = name
@@ -33,6 +35,9 @@ class RPG(ABC):
         return f"{self.name} ({self.rpg_class}) - Nível: {self.level()} - HP: {self.health}/{self.max_health}"
 
 
+
+# CLASSES DOS HERÓIS
+
 class Warrior(RPG):
     def __init__(self, name, health, strength, intelligence, dexterity, kills):
         super().__init__(name, "Guerreiro", health, strength, intelligence, dexterity)
@@ -46,10 +51,13 @@ class Warrior(RPG):
 
     def attack(self, enemy):
         base_damage = self.strength + random.randint(0, 5)
+        if random.random() < 0.1:
+            base_damage *= 2
+            print(f" ATAQUE CRÍTICO de {self.name}!")
         defense = enemy.defend()
         damage = max(0, base_damage - defense)
         enemy.health -= damage
-        print(f"{self.name} atacou {enemy.name} com espada: Dano bruto = {base_damage}, Defesa = {defense}, Dano real = {damage}")
+        print(f"{self.name} atacou {enemy.name} ⚔️: Dano bruto={base_damage}, Defesa={defense}, Dano real={damage}")
         return damage
 
 
@@ -66,10 +74,13 @@ class Archer(RPG):
 
     def attack(self, enemy):
         base_damage = self.strength + self.precision // 2 + random.randint(0, 5)
+        if random.random() < 0.1:
+            base_damage *= 2
+            print(f" ATAQUE CRÍTICO de {self.name}!")
         defense = enemy.defend()
         damage = max(0, base_damage - defense)
         enemy.health -= damage
-        print(f"{self.name} disparou uma flecha em {enemy.name}: Dano bruto = {base_damage}, Defesa = {defense}, Dano real = {damage}")
+        print(f"{self.name} disparou uma flecha 🏹 em {enemy.name}: Dano bruto={base_damage}, Defesa={defense}, Dano real={damage}")
         return damage
 
 
@@ -86,19 +97,22 @@ class Healer(RPG):
 
     def attack(self, enemy):
         base_damage = self.intelligence // 2 + random.randint(0, 3)
+        if random.random() < 0.1:
+            base_damage *= 2
+            print(f" ATAQUE CRÍTICO de {self.name}!")
         defense = enemy.defend()
         damage = max(0, base_damage - defense)
         enemy.health -= damage
-        print(f"{self.name} lançou um feitiço de luz em {enemy.name}: Dano real = {damage}")
+        print(f"{self.name} lançou um feitiço de luz ✨ em {enemy.name}: Dano real={damage}")
         return damage
 
     def heal(self, ally):
         heal_amount = self.intelligence + random.randint(0, 5)
         ally.health = min(ally.max_health, ally.health + heal_amount)
-        print(f"{self.name} curou {ally.name} em {heal_amount} HP!")
+        print(f"{self.name} curou {ally.name} em {heal_amount} HP !")
         return heal_amount
-
-
+    
+# CLASSES DOS VILÕES
 class Villain(RPG):
     def __init__(self, name, health, strength, intelligence, dexterity, evilness):
         super().__init__(name, "Vilão", health, strength, intelligence, dexterity)
@@ -112,10 +126,13 @@ class Villain(RPG):
 
     def attack(self, hero):
         base_damage = self.strength + self.evilness // 2 + random.randint(0, 5)
+        if random.random() < 0.1:
+            base_damage *= 2
+            print(f" ATAQUE CRÍTICO de {self.name}!")
         defense = hero.defend()
         damage = max(0, base_damage - defense)
         hero.health -= damage
-        print(f"{self.name} atacou {hero.name}: Dano bruto = {base_damage}, Defesa = {defense}, Dano real = {damage}")
+        print(f"{self.name} atacou {hero.name} : Dano bruto={base_damage}, Defesa={defense}, Dano real={damage}")
         return damage
 
 
@@ -125,96 +142,88 @@ class Minion(Villain):
 
     def attack(self, hero):
         base_damage = self.strength // 2 + random.randint(0, 4)
+        if random.random() < 0.1:
+            base_damage *= 2
+            print(f" ATAQUE CRÍTICO de {self.name}!")
         defense = hero.defend()
         damage = max(0, base_damage - defense)
         hero.health -= damage
-        print(f"{self.name} (Minion) atacou timidamente {hero.name}: Dano real = {damage}")
+        print(f"{self.name} (Minion) atacou {hero.name}: Dano real={damage}")
         return damage
 
 
 class Boss(Villain):
     def attack(self, hero):
         base_damage = self.strength + self.evilness + random.randint(5, 10)
+        if random.random() < 0.1:
+            base_damage *= 2
+            print(f" ATAQUE CRÍTICO de {self.name} (Boss)!")
         defense = hero.defend()
         damage = max(0, base_damage - defense)
         hero.health -= damage
-        print(f"{self.name} (Boss) devastou {hero.name}: Dano bruto = {base_damage}, Defesa = {defense}, Dano real = {damage}")
+        print(f"{self.name} (Boss) devastou {hero.name} 💀: Dano bruto={base_damage}, Defesa={defense}, Dano real={damage}")
         return damage
 
-    def __str__(self):
-        return f"{self.name} (Boss) - Malícia: {self.evilness} - HP: {self.health}/{self.max_health}"
 
-
-warrior = Warrior("Naruto", 40, 10, 8, 11, kills=30)
-archer = Archer("Hunte", 30, 12, 10, 16, precision=30)
-healer = Healer("Killua", 30, 10, 10, 13, assists=30)
+# CRIAÇÃO DOS PERSONAGENS
+warrior = Warrior("Naruto", 30, 12, 8, 11, kills=20)
+archer = Archer("Hunte", 30, 12, 8, 11, precision=20)
+healer = Healer("Killua", 30, 12, 8, 11, assists=20)
 heroes = [warrior, archer, healer]
 
-villain1 = Minion("Illumi", 30, 8, 6, 12, evilness=30)
-villain2 = Boss("Boruto", 50, 14, 15, 12, evilness=30)
-villain3 = Boss("Feitan", 50, 14, 15, 16, evilness=30)
-villain4 = Boss("Goku", 50, 30, 50, 23, evilness=30)
+villain1 = Minion("Illumi", 30, 14, 6, 12, evilness=20)
+villain2 = Boss("Boruto", 30, 14, 15, 12, evilness=20)
+villain3 = Boss("Feitan", 30, 14, 15, 16, evilness=20)
+villain4 = Boss("Goku", 30, 14, 23, 16, evilness=20)
 villains = [villain1, villain2, villain3, villain4]
 
 
+# FUNÇÃO DE BATALHA
 def battle(heroes, villains):
     turn = 1
-    max_turns = 10
+    max_turns = 5
+    regen_percent = 0.2
 
     current_heroes = list(heroes)
     current_villains = list(villains)
 
-    while turn <= max_turns and current_heroes and current_villains:
-        print(f"\n--- Turno {turn} ---")
+    while turn <= max_turns:
+        print(f"\n===  Turno {turn} ===")
 
-        # Turno dos Heróis
-        for hero in list(current_heroes):
+        # Regeneração
+        for char in current_heroes + current_villains:
+            if char.health > 0:
+                regen = int(char.max_health * regen_percent)
+                char.health = min(char.max_health, char.health + regen)
+                print(f"{char.name} regenerou {regen} HP !")
+
+        # Heróis atacam
+        for hero in current_heroes:
             if hero.health <= 0:
                 continue
-
-            targets_villains = [v for v in current_villains if v.health > 0]
-            if not targets_villains:
-                break
-
+            living_villains = [v for v in current_villains if v.health > 0]
+            if not living_villains:
+                continue
             if isinstance(hero, Healer) and random.random() < 0.5:
-                allies = [h for h in current_heroes if h.health > 0 and h.health < h.max_health]
-                if allies:
-                    ally = random.choice(allies)
-                    hero.heal(ally)
+                low_allies = [h for h in current_heroes if h.health > 0 and h.health < h.max_health]
+                if low_allies:
+                    hero.heal(random.choice(low_allies))
                 else:
-                    target = random.choice(targets_villains)
-                    hero.attack(target)
+                    hero.attack(random.choice(living_villains))
             else:
-                target = random.choice(targets_villains)
-                hero.attack(target)
+                hero.attack(random.choice(living_villains))
 
-            if target.health <= 0:
-                print(f"*** {target.name} foi derrotado e saiu da batalha! 💀 ***")
-                current_villains.remove(target)
-        
-        if not current_villains:
-            break
-
-        # Turno dos Vilões
-        for villain in list(current_villains):
+        # Vilões atacam
+        for villain in current_villains:
             if villain.health <= 0:
                 continue
-                
-            targets_heroes = [h for h in current_heroes if h.health > 0]
-            if not targets_heroes:
-                break
-                
-            target = random.choice(targets_heroes)
-            villain.attack(target)
-            
-            if target.health <= 0:
-                print(f"*** {target.name} foi derrotado e saiu da batalha! 🛡️💔 ***")
-                current_heroes.remove(target)
+            living_heroes = [h for h in current_heroes if h.health > 0]
+            if not living_heroes:
+                continue
+            villain.attack(random.choice(living_heroes))
 
-        if not current_heroes:
-            break
-
-        print("\nEstado após o turno:")
+        # Mostrar estado
+        print("\n Estado após o turno:")
         for h in current_heroes:
             print(h)
         for v in current_villains:
@@ -222,26 +231,21 @@ def battle(heroes, villains):
 
         turn += 1
 
-    print("\n------ FIM DA BATALHA -------------")
+    # Resultado final
+    print("\n------ 🏁 FIM DA BATALHA -------------")
+    total_hp_heroes = sum(h.health for h in current_heroes if h.health > 0)
+    total_hp_villains = sum(v.health for v in current_villains if v.health > 0)
+    print(f" HP Heróis: {total_hp_heroes} |  HP Vilões: {total_hp_villains}")
 
-    if current_heroes and not current_villains:
-        print(f"Vitória ÉPICA dos heróis! ")
-    elif current_villains and not current_heroes:
-        print(f"Vitória sinistra dos vilões! ")
-    elif not current_heroes and not current_villains:
-        print("Aniquilação mútua! Empate total! ")
+    if total_hp_heroes > total_hp_villains:
+        print("🎖️ Vitória dos Heróis!")
+    elif total_hp_villains > total_hp_heroes:
+        print(" Vitória dos Vilões!")
     else:
-        total_hp_heroes = sum(h.health for h in current_heroes if h.health > 0)
-        total_hp_villains = sum(v.health for v in current_villains if v.health > 0)
-        print(f"Atingiu o limite de {max_turns} turnos!")
-        print(f"HP restante - Heróis: {total_hp_heroes} | Vilões: {total_hp_villains}")
-        if total_hp_heroes > total_hp_villains:
-            print("Vitória dos heróis por HP residual!")
-        elif total_hp_villains > total_hp_heroes:
-            print("Vitória dos vilões por HP residual!")
-        else:
-            print("Empate técnico!")
+        print("⚖️ Empate técnico!")
 
+
+
+# EXECUÇÃO
 
 battle(heroes, villains)
-
